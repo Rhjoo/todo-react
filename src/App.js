@@ -1,25 +1,36 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import TodoForm from './TodoForm';
+import TodoList from './TodoList';
 import './App.css';
 
-class App extends Component {
+class App extends React.Component {
+  constructor() {
+    super();
+    this.addTodo = this.addTodo.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
+    this.state = {
+      todos: {}
+    };
+  }
+  
+  addTodo(task) {
+    const todos = {...this.state.todos};
+    const timestamp = Date.now();
+    todos[`todo-${timestamp}`] = task;
+    this.setState({ todos });
+  }
+  
+  deleteTodo(task) {
+    const todos = {...this.state.todos};
+    delete todos[task];
+    this.setState({ todos });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <TodoForm addTodo={this.addTodo} />
+        <TodoList todos={this.state.todos} deleteTodo={this.deleteTodo} />
       </div>
     );
   }
