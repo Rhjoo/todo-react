@@ -15,7 +15,7 @@ class TodoForm extends React.Component {
     return (
       <div className="todoList">
         <form ref={(input) => this.todoForm = input} onSubmit={(event) => this.createTodo(event)}>
-          <input type="text" ref={(input) => this.todo = input} placeholder="somthing to do" />
+          <input type="text" ref={(input) => this.todo = input} placeholder="something to do" />
           <button type="submit">Enter</button>
         </form>
       </div>
