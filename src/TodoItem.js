@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 
-const TodoItem = (props) => {
+function TodoItem(props) {
   return (
     <li>
-      {props.task.todo}
+      {props.task}
       <span> </span>
       <button onClick={() => props.deleteTodo(props.index)}>Remove</button>
     </li>
-  );
-};
+  )
+}
 
-export default TodoItem;
+export default TodoItem

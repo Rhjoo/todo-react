@@ -1,36 +1,55 @@
-import React from 'react';
+
+import React, { Component } from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
-import './App.css';
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.addTodo = this.addTodo.bind(this);
-    this.deleteTodo = this.deleteTodo.bind(this);
+class App extends Component {
+  constructor(props) {
+    super(props)
     this.state = {
-      todos: {}
-    };
+      userInput: "",
+      todos: []
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.createTodo = this.createTodo.bind(this)
+    this.deleteTodo = this.deleteTodo.bind(this)
   }
   
-  addTodo(task) {
-    const todos = {...this.state.todos};
-    const timestamp = Date.now();
-    todos[`todo-${timestamp}`] = task;
-    this.setState({ todos });
+  handleChange(event) {
+    const { value } = event.target
+    this.setState({ userInput: value })
   }
   
-  deleteTodo(task) {
-    const todos = {...this.state.todos};
-    delete todos[task];
-    this.setState({ todos });
+  handleSubmit(event) {
+    event.preventDefault()
+    this.createTodo()
+    this.setState({ userInput: "" })
+    event.target.reset()
+  }
+
+  createTodo() {
+    const copyOfTodosState = [...this.state.todos]
+    const newTodo = {}
+    const timestamp = Date.now()
+    newTodo.id =`task-${timestamp}`
+    newTodo.task = this.state.userInput
+    copyOfTodosState.push(newTodo)
+    this.setState({ todos: copyOfTodosState })
+  }
+
+  deleteTodo(index) {
+    const copyOfTodosState = [...this.state.todos]
+    const indexToDelete = copyOfTodosState.findIndex(item => item.id === index)
+    copyOfTodosState.splice(indexToDelete, 1)
+    this.setState({ todos: copyOfTodosState });
   }
 
   render() {
     return (
-      <div>
-        <TodoForm addTodo={this.addTodo} />
-        <TodoList todos={this.state.todos} deleteTodo={this.deleteTodo} />
+      <div className="App">
+        <TodoForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} userInput={this.state.userInput}/>
+        <TodoList todos={this.state.todos} deleteTodo={this.deleteTodo}/>
       </div>
     );
   }
